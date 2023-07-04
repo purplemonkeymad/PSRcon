@@ -3,12 +3,14 @@ function Wait-Async {
     param (
         [Parameter(Mandatory,ValueFromPipeline)]
         [System.Threading.Tasks.Task]
-        $Task
+        $Task,
+
+        [int]$Timeout= 60*000 # default 1 minute timeout.
     )
     
     end {
         try {
-            $Task.Wait()
+            $Task.Wait($Timeout)
             $Task.Result
         } catch {
             Write-Error -Message $_.Exception.Message
