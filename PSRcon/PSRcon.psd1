@@ -30,7 +30,7 @@ CompanyName = 'hamlyn'
 Copyright = '(c) David. All rights reserved.'
 
 # Description of the functionality provided by this module
-# Description = ''
+Description = 'Simple interactive Rcon client using the SharpRcon module.'
 
 # Minimum version of the PowerShell engine required by this module
 # PowerShellVersion = ''
@@ -98,7 +98,7 @@ PrivateData = @{
     PSData = @{
 
         # Tags applied to this module. These help with module discovery in online galleries.
-        # Tags = @()
+        Tags = @('SourceDedicatedServer','hlsrc_ds','RCON','CounterStrike','Half-Life')
 
         # A URL to the license for this module.
         # LicenseUri = ''
