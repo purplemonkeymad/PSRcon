@@ -1,4 +1,4 @@
-function Connect-Rcon {
+function Enter-Rcon {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory)]
