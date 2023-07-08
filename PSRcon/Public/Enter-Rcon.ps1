@@ -20,6 +20,10 @@ function Enter-Rcon {
     end {
         $client = [RconSharp.RconClient]::Create($hostname,$port)
         $connected = $client.ConnectAsync() | Wait-Async -ErrorAction Stop
+        if (-not $connected) {
+            Write-Error "Connection to ${hostname}:${port} failed."
+            return
+        }
         $authenticated = $client.AuthenticateAsync( ( [pscredential]::new('converter',$Password).GetNetworkCredential().Password) ) | Wait-Async -ErrorAction Stop
         if ($authenticated) {
             Write-Host "Connected, use Ctrl+C to disconnect."
