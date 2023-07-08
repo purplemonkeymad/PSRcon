@@ -30,7 +30,7 @@ function Enter-Rcon {
             try {
                 while (1) {
                     $command = Read-Host -Prompt '>'
-                    $client.ExecuteCommandAsync($command,$true) | Wait-Async
+                    $client.ExecuteCommandAsync($command,$false) | Wait-Async
                 }
             } finally {
                 $client.Disconnect()
