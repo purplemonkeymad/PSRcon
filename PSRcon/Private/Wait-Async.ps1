@@ -10,7 +10,7 @@ function Wait-Async {
     
     end {
         try {
-            $Task.Wait($Timeout)
+            $null = $Task.Wait($Timeout)
             $Task.Result
         } catch {
             Write-Error -Message $_.Exception.Message
