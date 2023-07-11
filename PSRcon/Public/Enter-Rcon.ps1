@@ -25,18 +25,20 @@ function Enter-Rcon {
             return
         }
         $authenticated = $client.AuthenticateAsync( ( [pscredential]::new('converter',$Password).GetNetworkCredential().Password) ) | Wait-Async -ErrorAction Stop
-        if ($authenticated) {
-            Write-Host "Connected, use Ctrl+C to disconnect."
-            try {
-                while (1) {
-                    $command = Read-Host -Prompt '>'
-                    $client.ExecuteCommandAsync($command,$false) | Wait-Async
-                }
-            } finally {
-                $client.Disconnect()
-            }
-        } else {
+        if (-not $authenticated) {
             Write-Error "Authentication Failed."
+            return
         }
+        
+        Write-Host "Connected, use Ctrl+C to disconnect."
+        try {
+            while (1) {
+                $command = Read-Host -Prompt '>'
+                $client.ExecuteCommandAsync($command,$false) | Wait-Async
+            }
+        } finally {
+            $client.Disconnect()
+        }
+
     }
 }
