@@ -19,11 +19,12 @@ foreach ($private:packagelistItem in $private:packagelist) {
     if (-not $private:PackageSearch) {
         # install from nuget
         Write-Warning "Package $($private:packagelistItem.Name) not installed, attmepting to fetch from nuget.org"
-        $private:PackageSearch = Install-Module -Name $private:packagelistItem.Name @private:packageExtraArgs -SkipDependencies -Scope CurrentUser
+        $private:PackageSearch = Install-Package -Name $private:packagelistItem.Name @private:packageExtraArgs -SkipDependencies -Scope CurrentUser
+        $private:PackageSearch = Get-Package -Name $private:packagelistItem.Name @private:packageExtraArgs | Select-Object -First 1
     }
 
     if (-not $private:PackageSearch) {
-        Write-Error "Failed to find or install required package $($private:packagelistItem.Name). Please install with 'Install-Module -Name $($private:packagelistItem.Name)'"
+        Write-Error "Failed to find or install required package $($private:packagelistItem.Name). Please install with 'Install-Package -Name $($private:packagelistItem.Name)'"
         continue
     }
 
