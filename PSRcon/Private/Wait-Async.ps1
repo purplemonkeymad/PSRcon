@@ -5,15 +5,21 @@ function Wait-Async {
         [System.Threading.Tasks.Task]
         $Task,
 
-        [int]$Timeout= 60*000 # default 1 minute timeout.
+        [int]$Timeout= 60*1000, # default 1 minute timeout.
+
+        [string]$TimeoutMessage
     )
     
     end {
-        try {
-            $null = $Task.Wait($Timeout)
+        $null = $Task.Wait($Timeout)
+        if ($Task.Status -lt [System.Threading.Tasks.TaskStatus]::Running){
+            if ($Task.IsFaulted) {
+                Write-Error -Exception $task.Exception
+                return
+            }
             $Task.Result
-        } catch {
-            Write-Error -Message $_.Exception.Message
+        } else {
+            Write-Error -Message "Timeout waiting for task. $TimeoutMessage"
         }
     }
 }

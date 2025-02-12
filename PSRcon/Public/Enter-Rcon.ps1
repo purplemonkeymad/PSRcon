@@ -19,12 +19,12 @@ function Enter-Rcon {
     
     end {
         $client = [RconSharp.RconClient]::Create($hostname,$port)
-        $connected = $client.ConnectAsync() | Wait-Async -ErrorAction Stop
+        $connected = $client.ConnectAsync() | Wait-Async -ErrorAction Stop -TimeoutMessage "Connect timed out."
         if (-not $connected) {
             Write-Error "Connection to ${hostname}:${port} failed."
             return
         }
-        $authenticated = $client.AuthenticateAsync( ( [pscredential]::new('converter',$Password).GetNetworkCredential().Password) ) | Wait-Async -ErrorAction Stop
+        $authenticated = $client.AuthenticateAsync( ( [pscredential]::new('converter',$Password).GetNetworkCredential().Password) ) | Wait-Async -ErrorAction Stop -TimeoutMessage "Authentication timed out."
         if (-not $authenticated) {
             Write-Error "Authentication Failed."
             return
@@ -34,7 +34,7 @@ function Enter-Rcon {
         try {
             while (1) {
                 $command = Read-Host -Prompt '>'
-                $client.ExecuteCommandAsync($command,$false) | Wait-Async
+                $client.ExecuteCommandAsync($command,$false) | Wait-Async  -TimeoutMessage "Timeout on command: $command"
             }
         } finally {
             $client.Disconnect()
